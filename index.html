@@ -12,8 +12,55 @@
 <script>document.documentElement.classList.add('js');window.addEventListener('error',function(){document.documentElement.classList.remove('js');});setTimeout(function(){if(!window.__mastersReady){document.documentElement.classList.remove('js');}},3000);</script>
 <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
 <meta name="googlebot" content="noindex, nofollow">
+<style>
+#lock{display:none}
+.is-locked body>*:not(#lock){display:none!important}
+.is-locked,.is-locked body{background:#000;overflow:hidden}
+.is-locked #lock{position:fixed;inset:0;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;padding:0 24px;background:#000;color:#fff;text-align:center}
+#lock img{display:block;width:min(340px,70vw);height:auto}
+#lock time{display:block;margin-top:44px;font:400 16px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.06em;color:rgba(255,255,255,.6);font-variant-numeric:tabular-nums;direction:ltr;unicode-bidi:isolate}
+</style>
+<script>
+/* viewing window: the page closes for viewing on 5.11.2026 at 13:00 Israel time (UTC+2). The check uses the server clock when it can, the visitor's clock otherwise. This is a screen, not a security barrier: the files stay reachable by direct address. */
+(function(){
+  var LOCK_AT=Date.UTC(2026,10,5,11,0,0),root=document.documentElement,timer,skew=0,stamped=false,txt='';
+  function stamp(){
+    var f=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Jerusalem',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'}).formatToParts(new Date(Date.now()+skew)),o={};
+    f.forEach(function(x){o[x.type]=x.value;});
+    txt=o.year+'-'+o.month+'-'+o.day+' '+o.hour+':'+o.minute+':'+o.second;
+    show();
+  }
+  function show(){var el=document.getElementById('lock-time');if(el&&txt)el.textContent=txt;}
+  document.addEventListener('DOMContentLoaded',show);
+  function apply(on){
+    root.classList.toggle('is-locked',on);
+    if(on&&!stamped){stamp();stamped=true;}
+    if(on){
+      document.querySelectorAll('video').forEach(function(v){try{v.pause();}catch(e){}});
+      document.querySelectorAll('iframe').forEach(function(f){f.removeAttribute('src');});
+    }
+  }
+  function schedule(now){
+    clearTimeout(timer);
+    var left=LOCK_AT-now;
+    if(left>0&&left<2147483647)timer=setTimeout(function(){apply(true);},left);
+  }
+  if(/[?&]preview=lock/.test(location.search)){apply(true);return;}
+  apply(Date.now()>=LOCK_AT);schedule(Date.now());
+  try{
+    fetch(location.pathname,{method:'HEAD',cache:'no-store'}).then(function(r){
+      var d=Date.parse(r.headers.get('date')||'');
+      if(d){if(Math.abs(d-Date.now())>60000){skew=d-Date.now();stamped=false;}apply(d>=LOCK_AT);schedule(d);}
+    }).catch(function(){});
+  }catch(e){}
+})();
+</script>
 </head>
 <body>
+<section id="lock" aria-label="וובאינסייד">
+  <img src="assets/brand/webinside-logo.svg" alt="וובאינסייד" width="500" height="96">
+  <time id="lock-time"></time>
+</section>
 <a class="skip" href="#content">דילוג לתוכן</a>
 
 <header class="site-header" id="top">
