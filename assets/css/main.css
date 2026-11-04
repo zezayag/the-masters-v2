@@ -1,0 +1,270 @@
+/* The Masters - prototype. Layout mirrored (RTL) from the measured reference at 1440x900. */
+:root {
+  --gold: #C99E66;   /* the gold of the arrows in the logo */
+  --ink: #000;
+  --paper: #fff;
+  --gray: #e8e8e8;
+  --p4: cubic-bezier(.165, .84, .44, 1);   /* Power4.easeOut */
+  --p1: cubic-bezier(.25, .46, .45, .94);  /* Power1.easeOut */
+  --pad: 48px;
+  --font: "COLBO", Arial, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; overflow-x: hidden; scroll-padding-top: 96px; }
+body {
+  margin: 0; background: var(--paper); color: var(--ink);
+  font-family: var(--font); font-weight: 400; font-size: 18px; line-height: 1.9;
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; overflow-x: clip; font-synthesis: none;
+}
+img { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+ul, ol { list-style: none; margin: 0; padding: 0; }
+h1, h2, h3, h4, p { margin: 0; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+.site-header__brand a:focus-visible { outline-color: #000; }
+
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.skip { position: fixed; top: 8px; inset-inline-start: 8px; z-index: 100; padding: 8px 16px; background: #fff; color: #000; transform: translateY(-200%); }
+.skip:focus { transform: none; }
+
+.title3 { font-weight: 700; font-size: 48px; line-height: 1.15; text-wrap: balance; }
+.concept__text p, .family__lead, .card p, .faq__a p, .faq__note, .slide__desc { text-wrap: pretty; }
+
+/* ---------- header ---------- */
+.site-header {
+  position: fixed; inset: 0 0 auto 0; z-index: 50; height: 126px;
+  color: #fff; background: transparent;
+  transition: height .5s var(--p1), background-color .5s var(--p1), color .5s var(--p1);
+}
+.site-header__brand { position: absolute; top: 28px; inset-inline-start: var(--pad); display: flex; align-items: center; gap: 28px; transition: top .5s var(--p1); }
+.site-header__logo { display: block; }
+.site-header__logo img { height: 64px; width: auto; transition: height .5s var(--p1); }
+.site-header__search { position: absolute; top: 54px; left: var(--pad); width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; transition: top .5s var(--p1), opacity .3s; }
+.site-header__search:hover { opacity: .6; }
+/* nav sits on the left, a comfortable gap (96px) after the search icon (48px margin + 24px icon) */
+.site-header__nav { position: absolute; top: 52px; left: calc(var(--pad) + 24px + 96px); transition: top .5s var(--p1); }
+.site-header__nav ul { display: flex; gap: 44px; }
+.site-header__nav a {
+  position: relative; display: block; padding-bottom: 6px; font-weight: 700; font-size: 18px; line-height: 1.6;
+}
+.site-header__nav a::after {
+  content: ""; position: absolute; inset-inline: 0; bottom: 0; height: 1px; background: currentColor;
+  transform: scaleX(0); transform-origin: right; transition: transform .3s var(--p1);
+}
+.site-header__nav a:hover::after, .site-header__nav a.is-active::after { transform: scaleX(1); }
+/* official Rolex widget is a fixed 150x70; shown 15% smaller (127.5x59.5) */
+.site-header__rolex { position: relative; width: 127.5px; height: 59.5px; display: block; flex: none; }
+.site-header__rolex iframe { position: absolute; top: 0; left: 0; width: 150px; height: 70px; border: 0; pointer-events: none; display: block; transform: scale(.85); transform-origin: 0 0; }
+
+.site-header.is-scrolled { height: 82px; background: #fff; color: #000; }
+.site-header.is-scrolled .site-header__brand { top: 11px; }
+.site-header.is-scrolled .site-header__logo img { height: 50px; }
+.site-header.is-scrolled .site-header__nav { top: 28px; }
+.site-header.is-scrolled .site-header__search { top: 29px; }
+.js .site-header { opacity: 0; filter: blur(5px); }
+.js .site-header.is-ready { opacity: 1; filter: none; transition: opacity .3s var(--p1), filter .3s var(--p1), height .5s var(--p1), background-color .5s var(--p1), color .5s var(--p1); }
+
+/* ---------- hero ---------- */
+.hero { position: relative; height: 100vh; height: 100svh; min-height: calc(238px + 34vw);   /* never shorter than header + gap + picture + gap */ overflow: hidden; background: #fff; }
+.hero__field { position: absolute; top: 0; left: 0; width: 70%; height: 100%; background: #000; overflow: hidden; }
+.hero__field::after { content: ""; position: absolute; inset: 0; background: rgba(0, 0, 0, .55); }
+.hero__field-img { position: absolute; inset: 0; background-size: cover; background-position: 50% 50%; filter: blur(5px); transform: scale(1.2); }
+.hero__field-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: none; }
+.js .hero__field { clip-path: inset(0 0 0 100%); }
+.js .hero__field-img { opacity: 0; }
+
+.hero__stage {
+  position: absolute; left: 20%; top: max(50%, calc(182px + 17vw)); width: 60%; aspect-ratio: 864 / 490;   /* centred, but keeps 56px below the 126px header on short screens */
+  transform: translateY(-50%);
+}
+.slide { position: absolute; inset: 0; visibility: hidden; }
+.slide.is-active { visibility: visible; }
+.slide.is-top { z-index: 3; }
+.slide__title {
+  position: absolute; top: 50%; inset-inline-start: -20%; width: 120%; transform: translateY(-50%);
+  font-weight: 900; font-size: 4.8vw; line-height: 1.2; text-align: start; color: #fff; z-index: 2;
+}
+.slide__title--black { color: #000; z-index: 1; }
+.slide__visual { position: absolute; inset: 0; z-index: 2; overflow: hidden; background: #000; perspective: 4000px; }
+.slide__visual .slide__title { inset-inline-start: -20%; }
+/* the reference tilts only the picture (up to 10deg, perspective 4000px); titles stay put */
+.slide__img {
+  position: absolute; inset: -5%; width: 110%; height: 110%; max-width: none; object-fit: cover;
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) scale(1.1); will-change: transform;
+}
+/* neutral dim so the small white description and action hold 4.5:1 over the brightest parts of the footage */
+.slide__visual::after { content: ""; position: absolute; inset: 0; background: rgba(0, 0, 0, .55); }
+.slide__visual .slide__title, .slide__desc, .slide__btn { z-index: 3; }
+.slide__title.slide__title--black { z-index: 1; }
+.slide__desc { position: absolute; inset-inline-start: 40px; bottom: 40px; width: 50%; font-size: 15.6px; line-height: 2; color: #fff; }
+.btn.slide__btn { position: absolute; inset-inline-end: 40px; bottom: 40px; z-index: 3; }
+.js .slide__title, .js .slide__desc, .js .slide__btn { opacity: 0; }
+.js .slide__visual { clip-path: inset(0 0 0 100%); }
+
+.hero__pagination {
+  position: absolute; top: 50%; right: calc(100% - 20px); transform: translateY(-50%); z-index: 4;
+  font-weight: 300; font-size: 18px; line-height: 2; color: #fff;
+}
+.hero__pagination li { position: relative; padding-inline-start: 50px; opacity: 0; visibility: hidden; transition: opacity .3s; }
+.hero__pagination li.is-active { opacity: 1; visibility: visible; }
+.hero__pagination span { position: absolute; top: 50%; inset-inline-start: 0; width: 0; height: 1px; background: #fff; transform: translateY(-50%); }
+.hero__pagination li.is-active span { width: 30px; transition: width 1s var(--p4); }
+
+.hero__controls { position: absolute; z-index: 5; bottom: 24px; inset-inline-start: var(--pad); display: flex; align-items: center; gap: 4px; color: #000; }
+.hero__arrow { width: 48px; height: 48px; font-size: 32px; line-height: 1; display: flex; align-items: center; justify-content: center; transition: opacity .3s; }
+.hero__arrow:hover { opacity: .5; }
+.hero__arrow[aria-disabled="true"] { cursor: default; pointer-events: none; }
+.hero__pause { margin-inline-start: 12px; font-weight: 300; font-size: 15.6px; line-height: 1; padding: 8px 0; border-bottom: 1px solid currentColor; }
+
+/* buttons: no boxes. A light label, a fine line that ends in an arrowhead, and a hairline underneath. On hover the
+   line stretches forward, the arrowhead goes with it, and a full-strength hairline is drawn across from the start edge. */
+.btn {
+  position: relative; display: inline-flex; align-items: center; gap: 20px; padding: 14px 0 19px;
+  font-weight: 400; font-size: 15.6px; line-height: 1.3; color: var(--btn-ink);
+}
+.btn::before, .btn::after { content: ""; position: absolute; inset-inline: 0; bottom: 0; height: 1px; background: currentColor; }
+.btn::before { opacity: .28; }
+.btn::after { transform: scaleX(0); transform-origin: right; transition: transform .5s var(--p4); }
+.btn__label { position: relative; }
+.btn__line { position: relative; display: block; flex: none; width: 68px; height: 12px; }
+.btn__line i { position: absolute; right: 0; top: 50%; width: 38px; height: 1px; background: currentColor; transition: width .5s var(--p4); }
+.btn__line i::after {
+  content: ""; position: absolute; left: 0; top: 50%; width: 8px; height: 8px; box-sizing: border-box;
+  border-left: 1px solid currentColor; border-bottom: 1px solid currentColor; transform: translateY(-50%) rotate(45deg);
+}
+.btn:focus-visible::after { transform: scaleX(1); }
+.btn:focus-visible .btn__line i { width: 68px; }
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover::after { transform: scaleX(1); }
+  .btn:hover .btn__line i { width: 68px; }
+}
+.btn { transition: transform .16s ease-out; }
+.btn:active { transform: scale(.98); }
+.btn--light { --btn-ink: #fff; }
+.btn--dark { --btn-ink: #000; }
+
+/* ---------- concept / about ---------- */
+.concept { display: grid; grid-template-columns: 538px 1fr; align-items: center; padding: 80px var(--pad); min-height: 837px; }
+.concept__media { position: relative; width: 538px; aspect-ratio: 538 / 677; overflow: hidden; }
+.concept__copy { margin-inline-start: 107px; max-width: 680px; }
+/* the crown emblem, vector taken from the client's own logo (gold #C99E66 from the site's stylesheet) */
+.concept__emblem { margin-bottom: 26px; }
+.concept__emblem img { width: 52px; height: auto; }
+.concept__text { margin-top: 40px; max-width: 620px; font-size: 20px; line-height: 1.9; }
+.concept__text p + p { margin-top: 20px; }
+.concept .btn { margin-top: 30px; }
+
+.sw-visual__layer { position: absolute; top: 0; inset-inline-start: 0; width: 100%; height: 100%; background: #000; }
+.sw-visual__img { position: absolute; inset: -6% 0; width: 100%; height: 112%; max-width: none; object-fit: cover; will-change: transform; }
+.js .sw-visual__layer { width: 0; }
+.js .sw-visual__img { opacity: 0; transform: scale(1.3); }
+
+/* ---------- brands: vertical panels; the active one opens and shows a photograph behind its logo ---------- */
+.brands { position: relative; padding: 120px 0 140px; }
+.brands .title3 { margin-inline-start: var(--pad); margin-bottom: 72px; }
+.brands__all { position: absolute; top: 120px; inset-inline-end: var(--pad); }
+.brands__list { display: flex; gap: 6px; height: 440px; padding: 0 var(--pad); }
+.brands__list li { flex: 1 1 0; min-width: 0; transition: flex .75s var(--p4); }
+.brands__list li.is-active { flex: 3.2 1 0; }
+.brand { position: relative; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; overflow: hidden; background: #000; }
+.brand__img {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  clip-path: inset(0 0 0 100%); transform: scale(1.12);
+  transition: clip-path .9s var(--p4), transform 1.2s var(--p4);
+}
+.brand::after { content: ""; position: absolute; inset: 0; background: rgba(0, 0, 0, .5); opacity: 0; transition: opacity .8s var(--p1); }
+.brands__list li.is-active .brand__img { clip-path: inset(0 0 0 0); transform: none; }
+.brands__list li.is-active .brand::after { opacity: 1; }
+.brand__logo { position: relative; z-index: 1; width: clamp(84px, 76%, var(--lw, 170px)); height: auto; }
+.brand .brand__go {
+  position: absolute; z-index: 2; bottom: 24px; inset-inline-start: 32px;
+  opacity: 0; transform: translateY(12px); pointer-events: none; transition: opacity .18s ease-out, transform .18s ease-out;   /* leaves fast */
+}
+.brands__list li.is-active .brand__go { opacity: 1; transform: none; transition: opacity .55s .2s var(--p1), transform .7s .2s var(--p4); }
+.brand:focus-visible { outline: 2px solid #fff; outline-offset: -8px; }
+
+/* ---------- family (uniqueness) ---------- */
+.family { background: #000; color: #fff; padding: 120px var(--pad) 140px; }
+.family__head { display: grid; grid-template-columns: 1fr 1fr; gap: 0 var(--pad); align-items: start; margin-bottom: 80px; }
+.family__lead { margin-top: 60px; max-width: 672px; font-size: 20px; line-height: 1.9; }
+.family__list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 var(--pad); align-items: start; }
+.card__img { position: relative; aspect-ratio: 4 / 3; overflow: hidden; }
+/* the three cards are deliberately not level: different picture heights and offsets, and nothing moves */
+.card:nth-child(1) .card__img { aspect-ratio: 4 / 5; }
+.card:nth-child(2) { margin-top: 96px; }
+.card:nth-child(2) .card__img { aspect-ratio: 4 / 3; }
+.card:nth-child(3) { margin-top: 44px; }
+.card:nth-child(3) .card__img { aspect-ratio: 1 / 1; }
+.card__img img, .card__img video { position: relative; display: block; width: 100%; height: 100%; object-fit: cover; }
+.card__title { text-wrap: balance; margin-top: 38px; font-weight: 700; font-size: 30px; line-height: 1.3; }
+.card p { margin-top: 12px; font-size: 18px; line-height: 1.9; }
+
+/* ---------- faq: minimal accordion (21st "Interactive Accordion" reference). Each question carries a numbered circle; the open one is
+   filled with the gold of the logo's arrows. The plus turns into an X, and a full-strength line is drawn under a row on hover. ---------- */
+.faq { display: grid; grid-template-columns: 538px 1fr; column-gap: 107px; align-items: start; padding: 120px var(--pad) 140px; }
+.faq__head { position: sticky; top: 140px; }
+.faq__note { margin-top: 30px; max-width: 440px; line-height: 1.9; text-wrap: pretty; }
+.faq .btn { margin-top: 24px; }
+.faq__item { position: relative; border-bottom: 1px solid rgba(0, 0, 0, .16); }
+.faq__item::after { content: ""; position: absolute; inset-inline: 0; bottom: -1px; height: 1px; background: #000; transform: scaleX(0); transform-origin: right; transition: transform .6s var(--p4); }
+.faq__item.is-open::after { transform: scaleX(1); }
+.faq__q { margin: 0; font: inherit; }
+.faq__q button { display: flex; align-items: center; gap: 28px; width: 100%; padding: 30px 0; text-align: start; font-weight: 700; font-size: 30px; line-height: 1.3; color: rgba(0, 0, 0, .55); transition: color .35s var(--p1); }
+.faq__item.is-open .faq__q button { color: #000; }
+.faq__q button:focus-visible { outline-offset: -4px; }
+.faq__text { flex: 1; text-wrap: balance; }
+.faq__num {
+  flex: none; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; box-sizing: border-box;
+  border: 1px solid rgba(0, 0, 0, .28); border-radius: 50%; font-weight: 400; font-size: 15.6px; line-height: 1; color: inherit;
+  transition: background-color .45s var(--p1), border-color .45s var(--p1), color .45s var(--p1);
+}
+.faq__item.is-open .faq__num { background: var(--gold); border-color: var(--gold); color: #000; }
+.faq__icon { position: relative; flex: none; width: 24px; height: 24px; transition: transform .6s var(--p4); }
+.faq__icon::before, .faq__icon::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 2px; margin-top: -1px; background: currentColor; }
+.faq__icon::after { transform: rotate(90deg); }
+.faq__item.is-open .faq__icon { transform: rotate(45deg); }
+@media (hover: hover) and (pointer: fine) {
+  .faq__item:hover::after { transform: scaleX(1); }
+  .faq__item:not(.is-open) .faq__q button:hover { color: #000; }
+  .faq__item:not(.is-open) .faq__q button:hover .faq__num { border-color: var(--gold); }
+}
+.faq__a { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .6s var(--p4); }
+.faq__item.is-open .faq__a { grid-template-rows: 1fr; }
+.faq__a > div { position: relative; overflow: hidden; visibility: hidden; transition: visibility 0s .6s; }
+.faq__a > div::before { content: ""; position: absolute; top: 0; bottom: 38px; inset-inline-start: 21px; width: 2px; background: var(--gold); transform: scaleY(0); transform-origin: top; transition: transform .3s ease-out; }
+.faq__item.is-open .faq__a > div::before { transform: scaleY(1); transition: transform .7s .2s var(--p4); }
+.faq__num, .faq__text { transition: transform .16s ease-out, background-color .35s var(--p1), border-color .35s var(--p1), color .35s var(--p1); }
+.faq__q button:active .faq__num { transform: scale(.92); }
+.faq__q button:active .faq__text { transform: translateX(-3px); }
+.faq__item.is-open .faq__a > div { visibility: visible; transition-delay: 0s; }
+.faq__a p { max-width: 700px; padding: 0 72px 38px 0; font-size: 18px; line-height: 1.9; text-wrap: pretty; opacity: 0; transform: translateY(12px); transition: opacity .3s ease-out, transform .3s ease-out; }
+.faq__item.is-open .faq__a p { opacity: 1; transform: none; transition: opacity .55s .15s var(--p1), transform .7s .15s var(--p4); }
+
+/* ---------- scroll reveal start states (set only when JS runs) ---------- */
+.js .card__img { clip-path: inset(0 0 0 100%); }
+.js .card__img img, .js .card__img video { transform: scale(1.3); }
+.js .card__img.is-in { clip-path: none; }
+.js .card__img.is-in img, .js .card__img.is-in video { transform: none; }
+.js .card__title[data-reveal] { opacity: 0; transform: skewX(15deg); filter: blur(5px); }
+.js .card p[data-reveal] { opacity: 0; transform: translateY(50px); }
+.js .card__title.is-in, .js .card p.is-in { opacity: 1; transform: none; filter: none; }
+.js .sw-title { opacity: 0; transform: skewX(15deg); filter: blur(5px); }
+.js .sw-text { opacity: 0; transform: translateY(50px); }
+.js .sw-list .li-anim { opacity: 0; transform: translateY(50px); }
+.js .sw.is-in, .js .sw.is-in .li-anim { opacity: 1; transform: none; filter: none; }
+.js .sw-visual.is-in .sw-visual__layer { width: 100%; }
+.js .sw-visual.is-in .sw-visual__img { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .btn::after, .btn__line i, .brands__list li, .brand__img, .brand::after, .brand__go, .faq__a, .faq__a p, .faq__a > div::before, .faq__icon, .faq__num, .faq__text, .faq__item::after { transition: none; }
+  .js .site-header, .js .hero__field, .js .hero__field-img, .js .slide__title, .js .slide__desc, .js .slide__btn,
+  .js .slide__visual, .js .sw-title, .js .sw-text, .js .sw-list .li-anim,
+  .js .sw-visual__layer, .js .sw-visual__img { opacity: 1; transform: none; filter: none; clip-path: none; }
+  .js .sw-visual__layer { width: 100%; }
+  .js .card__img { clip-path: none; }
+  .js .card__img img, .js .card__img video { transform: none; }
+  .js .card__title[data-reveal], .js .card p[data-reveal] { opacity: 1; transform: none; filter: none; }
+}

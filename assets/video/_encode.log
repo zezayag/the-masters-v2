@@ -1,0 +1,1 @@
+ffmpeg -y -loglevel error -i _cand/rolex-src.mp4 -an -vf  -c:v libx264 -crf 2  280.58s user 3.23s system 114% cpu 4:08.26 total
